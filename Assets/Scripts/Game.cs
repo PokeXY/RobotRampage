@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
+using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class Game : MonoBehaviour
     public int waveCountdown;
     public bool isGameOver;
     public int enemiesLeft;
+    public GameObject gameOverPanel;
 
     void Start()
     {
@@ -80,5 +83,40 @@ public class Game : MonoBehaviour
             score += 1;
             gameUI.SetScoreText(score);
         }
+    }
+
+    // 1
+    public void OnGUI()
+    {
+        if (isGameOver && Cursor.visible == false)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+    }
+    // 2
+    public void GameOver()
+    {
+        isGameOver = true;
+        Time.timeScale = 0;
+        player.GetComponent<FirstPersonController>().enabled = false;
+        player.GetComponent<CharacterController>().enabled = false;
+        gameOverPanel.SetActive(true);
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(Constants.SceneBattle);
+        gameOverPanel.SetActive(true);
+    }
+    // 4
+    public void Exit()
+    {
+        Application.Quit();
+    }
+    // 5
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(Constants.SceneMenu);
     }
 }
